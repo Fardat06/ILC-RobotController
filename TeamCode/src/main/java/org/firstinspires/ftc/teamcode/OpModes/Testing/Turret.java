@@ -39,7 +39,7 @@ public class Turret extends OpMode {
             turretSubsystem.adjustHood(hoodAdjustment * 0.3);
 
             turretSubsystem.loop();
-            logger.debug("speed=%.2f", turretSubsystem.getSpeed());
+            logger.debug("speed=%.2f, hood=%.2f", turretSubsystem.getSpeed(), turretSubsystem.getHoodPosition());
         }
 
         gamepad.update();

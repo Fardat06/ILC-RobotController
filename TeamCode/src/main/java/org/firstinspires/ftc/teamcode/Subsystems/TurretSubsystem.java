@@ -1,6 +1,7 @@
+
 package org.firstinspires.ftc.teamcode.Subsystems;
 
-import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
@@ -8,15 +9,21 @@ import org.firstinspires.ftc.teamcode.Util.Algebra;
 import org.firstinspires.ftc.teamcode.Util.Logger;
 
 public class TurretSubsystem extends Subsystem {
+    private static final double HOOD_CENTER = 0.5;
+    private static final double HOOD_RANGE = 0.08;
+
     private double speed = 0.0;
+
     private final DcMotor turretMotor;
-    private final CRServo hoodServo;
+    private final Servo hoodServo;
+
+    private double hoodPosition = 0.0;
 
     public TurretSubsystem(HardwareMap hardwareMap, Logger logger) {
         super(hardwareMap, logger, Requirement.OPTIONAL);
         logger.infoLine("Initializing Turret Subsystem");
         turretMotor = getHardware(DcMotor.class, "turretMotor");
-        hoodServo = getHardware(CRServo.class, "hoodServo");
+        hoodServo = getHardware(Servo.class, "hoodServo");
     }
 
     @Override
@@ -25,8 +32,8 @@ public class TurretSubsystem extends Subsystem {
         turretMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         turretMotor.setPower(speed);
 
-        hoodServo.setDirection(CRServo.Direction.FORWARD);
-        hoodServo.setPower(0.0);
+        hoodServo.setDirection(Servo.Direction.FORWARD);
+        setHoodPosition(hoodPosition);
     }
 
     @Override
@@ -54,18 +61,28 @@ public class TurretSubsystem extends Subsystem {
         speed = Algebra.clamp(-1.0, 1.0, value);
     }
 
-    public void adjustHood(double power) {
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void adjustHood(double increment) {
+        if (!isAvailable())
+            return;
+        setHoodPosition(hoodPosition + increment);
+        hoodServo.setPosition(hoodPosition);
+    }
+
+    public void setHoodPosition(double pos) {
         if (!isAvailable())
             return;
 
-        power = Algebra.clamp(-1.0, 1.0, power);
-        if (Math.abs(power) < 0.05)
-            power = 0.0;
-
-        hoodServo.setPower(power);
+        hoodPosition = Algebra.clamp(
+                HOOD_CENTER - HOOD_RANGE / 2.0,
+                HOOD_CENTER + HOOD_RANGE / 2.0,
+                pos);
     }
 
-    public double getSpeed(){
-        return speed;
+    public double getHoodPosition() {
+        return hoodPosition;
     }
 }

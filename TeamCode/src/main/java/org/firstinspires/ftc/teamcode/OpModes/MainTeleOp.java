@@ -15,7 +15,13 @@ public class MainTeleOp extends CustomOpMode {
 
         int speedDir = gm1.getDirectionJustDown(GamepadInput.DpadRight, GamepadInput.DpadLeft);
         robot.turret.adjustSpeed(speedDir * 0.1);
-        logger.debug("Turret: speed=%.2f", robot.turret.getSpeed());
+        int hoodDir = gm1.getDirectionDown(GamepadInput.DpadUp, GamepadInput.DpadDown);
+        robot.turret.adjustHood(0.001 * hoodDir);
+        logger.debug(
+                "Turret: speed=%.2f, hood=%.2f",
+                robot.turret.getSpeed(),
+                robot.turret.getHoodPosition()
+        );
 
         double y = -gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x;
