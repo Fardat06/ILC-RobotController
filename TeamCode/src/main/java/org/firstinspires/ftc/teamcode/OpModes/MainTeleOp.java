@@ -11,6 +11,30 @@ public class MainTeleOp extends CustomOpMode {
         if (gm1.isJustDown(GamepadInput.LeftBumper))
             robot.intake.toggle();
 
+        if (gm1.isDown(GamepadInput.RightBumper))
+            robot.turret.setSpeed(0.5);
+        else
+            robot.turret.setSpeed(0);
+
+//        if(gm1.isDown(GamepadInput.DpadDown)){
+//            robot.turret.adjustHood(-0.1);
+//        }
+//        if(gm1.isDown(GamepadInput.DpadUp)){
+//            robot.turret.adjustHood(+0.1);
+//        }
+        // asta e acc lucru ca mai jos (note for dodo)
+
+        int mul = (gm1.isDown(GamepadInput.DpadUp) ? 1 : 0) - (gm1.isDown(GamepadInput.DpadDown) ? 1 : 0);
+        robot.turret.adjustHood(0.1 * mul);
+
+
+        if(gm1.isDown(GamepadInput.DpadLeft))
+            robot.turret.adjustSpeed(0.1);
+        else if(gm1.isDown(GamepadInput.DpadRight))
+            robot.turret.adjustSpeed(-0.1);
+
+
+
         double y = -gamepad1.left_stick_y;
         double x = gamepad1.left_stick_x;
         double rotation = gamepad1.right_stick_x;

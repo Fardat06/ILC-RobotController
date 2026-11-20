@@ -48,6 +48,13 @@ public class TurretSubsystem extends Subsystem {
         speed = Math.max(-1.0, Math.min(1.0, speed));
     }
 
+    public void setSpeed(double value) {
+        if (!isAvailable())
+            return;
+
+        speed = Algebra.clamp(-1.0, 1.0, value);
+    }
+
     public void adjustHood(double power) {
         if (!isAvailable())
             return;
