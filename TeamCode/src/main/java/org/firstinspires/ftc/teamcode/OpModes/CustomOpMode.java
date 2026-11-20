@@ -34,12 +34,12 @@ public abstract  class CustomOpMode extends OpMode {
 
     @Override
     public final void loop() {
-        gm1.update();
-        gm2.update();
-
         onLoop();
 
         robot.loop();
+
+        gm1.update();
+        gm2.update();
 
         telemetry.update();
     }

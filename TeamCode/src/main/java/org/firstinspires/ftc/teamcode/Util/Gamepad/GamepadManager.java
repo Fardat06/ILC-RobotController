@@ -46,6 +46,15 @@ public class GamepadManager {
             return 0;
         }
     }
+
+    public int getDirectionDown(GamepadInput positive, GamepadInput negative) {
+        return (isDown(positive) ? 1 : 0) - (isDown(negative) ? 1 : 0);
+    }
+
+    public int getDirectionJustDown(GamepadInput positive, GamepadInput negative) {
+        return (isJustDown(positive) ? 1 : 0) - (isJustDown(negative) ? 1 : 0);
+    }
+
     public boolean isJustDown(GamepadInput input) {
         return isDown(input) && !wasDown(input);
     }

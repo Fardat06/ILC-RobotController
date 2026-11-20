@@ -9,16 +9,18 @@ public class IntakeSubsystem extends Subsystem {
 
     private final DcMotor intakeMotor;
     private double power = 0.0;
-    private boolean running = false;
 
     public IntakeSubsystem(HardwareMap hardwareMap, Logger logger) {
         super(hardwareMap, logger);
         logger.infoLine("Initializing Intake subsystem");
         intakeMotor = getHardware(DcMotor.class, "intake");
+
     }
 
     @Override
     public void onInit() {
+        intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+        intakeMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeMotor.setPower(0);
     }
 
@@ -29,20 +31,17 @@ public class IntakeSubsystem extends Subsystem {
 
     @Override
     public void onStop() {
+        power = 0.0;
         intakeMotor.setPower(0);
     }
 
     public void toggle() {
         if (!isAvailable())
             return;
-
-        if (!running) {
-            power = 1.0;
-            running = true;
-        } else {
-            power = 0.0;
-            running = false;
-        }
+        power = (power == 0.0) ? POWER : 0.0;
     }
 
+    public double getPower() {
+        return power;
+    }
 }

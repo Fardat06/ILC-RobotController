@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.Util.Algebra;
 import org.firstinspires.ftc.teamcode.Util.Logger;
 
 public class TurretSubsystem extends Subsystem {
-    private double speed = 0.5;
+    private double speed = 0.0;
     private final DcMotor turretMotor;
     private final CRServo hoodServo;
 
@@ -44,8 +44,7 @@ public class TurretSubsystem extends Subsystem {
         if (!isAvailable())
             return;
 
-        speed += increment;
-        speed = Math.max(-1.0, Math.min(1.0, speed));
+        setSpeed(speed + increment);
     }
 
     public void setSpeed(double value) {
